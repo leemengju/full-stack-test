@@ -14,6 +14,7 @@
         <el-table-column prop="title" label="标题" />
         <el-table-column prop="content" label="内容" />
         <el-table-column label="操作" width="200">
+          <!-- 這表示這個 <template> 是一個具名插槽（slot），名稱為 default，並且接收一個叫做 row 的資料物件作為插槽的上下文參數。 -->
           <template #default="{ row }">
             <el-button type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
             <el-button type="danger" size="small" @click="handleDelete(row)">删除</el-button>
@@ -47,12 +48,16 @@
 </template>
 
 <script setup>
+// <-------------------------------------------引用--------------------------------------->
 // ref：是 Vue 3 的響應式 API，用來建立「可變的響應式資料」。
 import { ref, onMounted } from 'vue'
 // ElMessage：Element Plus 的訊息提示，例如錯誤、成功提示。
 import { ElMessage, ElMessageBox } from 'element-plus'
+// 引入 API 文件
 import { postApi } from '../api'
 
+// <------------------------------------------定義參數--------------------------------------->
+// ref就是v-model，雙向綁定
 const posts = ref([])
 const dialogVisible = ref(false)
 const isEdit = ref(false)
@@ -62,10 +67,18 @@ const form = ref({
 })
 const currentId = ref(null)
 
+
+// <------------------------------------------functions--------------------------------------->
 // 获取所有文章
+// // 因為 posts 是由 ref([]) 建立的 響應式引用物件（ref），真正的值是存在 posts.value 裡面。
+// posts = {
+  // value: []  // 真正的資料存在這裡
+// }
+//  .value 存取或改動值，Vue 會追蹤 posts.value 的變化，自動更新 UI
 const fetchPosts = async () => {
   try {
     const data = await postApi.getAllPosts()
+    console.log(data)
     posts.value = data
   } catch (error) {
     ElMessage.error('获取文章列表失败')
@@ -75,9 +88,9 @@ const fetchPosts = async () => {
 // 显示新增对话框
 const showAddDialog = () => {
   isEdit.value = false
-  form.value = {
-    title: '',
-    content: ''
+  form.value={
+    title:"",
+    content:""
   }
   dialogVisible.value = true
 }
@@ -96,6 +109,7 @@ const handleEdit = (row) => {
 // 处理删除
 const handleDelete = async (row) => {
   try {
+    // (內文,標題，{狀態})
     await ElMessageBox.confirm('确定要删除这篇文章吗？', '提示', {
       type: 'warning'
     })
@@ -110,6 +124,7 @@ const handleDelete = async (row) => {
 }
 
 // 提交表单
+// 先編輯(傳入id,form)，後新增(id系統自動生成)，並重新渲染(fetchPosts)
 const handleSubmit = async () => {
   try {
     if (isEdit.value) {
@@ -129,6 +144,7 @@ const handleSubmit = async () => {
 onMounted(() => {
   fetchPosts()
 })
+
 </script>
 
 <style scoped>

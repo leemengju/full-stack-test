@@ -1,10 +1,9 @@
 {
   "posts": [
     {
-      "id": "1",
       "title": "第一篇文章",
-      "content": "看看你想說什麼",
-      "email": "Alex@com"
+      "content": "12234555",
+      "id": "1"
     },
     {
       "id": "2",
@@ -17,14 +16,14 @@
       "content": "这是第三篇文章的内容，有很多很多"
     },
     {
-      "id": "87d0",
-      "title": "第一篇文章",
-      "content": "看看你想說什麼"
+      "id": "ee7e",
+      "title": "第四篇文章",
+      "content": "很多很多"
     }
   ],
   "comments": [
     {
-      "id": 1,
+      "id": "1",
       "postId": 1,
       "text": "很好的文章！"
     }
