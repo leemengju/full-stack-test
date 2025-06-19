@@ -52,6 +52,7 @@
 // ref：是 Vue 3 的響應式 API，用來建立「可變的響應式資料」。
 import { ref, onMounted } from 'vue'
 // ElMessage：Element Plus 的訊息提示，例如錯誤、成功提示。
+// ELMessage無title彈窗;ELMessageBox有title彈窗
 import { ElMessage, ElMessageBox } from 'element-plus'
 // 引入 API 文件
 import { postApi } from '../api'
@@ -87,29 +88,32 @@ const fetchPosts = async () => {
 
 // 显示新增对话框
 const showAddDialog = () => {
+ 
+  // 新增文章時，isEdit設為false，因為這是新增而不是編輯
+  // 這樣在handleSubmit時就會執行createPost而不是updatePost
   isEdit.value = false
+  dialogVisible.value = true
   form.value={
     title:"",
     content:""
   }
-  dialogVisible.value = true
 }
 
 // 显示编辑对话框
 const handleEdit = (row) => {
   isEdit.value = true
+  dialogVisible.value = true
   currentId.value = row.id
   form.value = {
     title: row.title,
     content: row.content
   }
-  dialogVisible.value = true
+ 
 }
 
 // 处理删除
 const handleDelete = async (row) => {
   try {
-    // (內文,標題，{狀態})
     await ElMessageBox.confirm('确定要删除这篇文章吗？', '提示', {
       type: 'warning'
     })
@@ -117,6 +121,8 @@ const handleDelete = async (row) => {
     ElMessage.success('删除成功')
     fetchPosts()
   } catch (error) {
+    // 當使用者點擊取消按鈕時，error 會是 'cancel'，這時不需要顯示錯誤訊息
+    // 只有在真正發生錯誤時才顯示錯誤訊息
     if (error !== 'cancel') {
       ElMessage.error('删除失败')
     }

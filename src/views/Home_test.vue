@@ -73,27 +73,57 @@ try {
 }
 
 const showAddDialog=()=>{
-  isEdit.value=false
-  dialogVisible.value=true
-  form.value={
-    title:"",
-    content:""
-  }
+ isEdit.value=false
+ dialogVisible.value=true
+ form.value={
+  title:"",
+  content:""
+ }
     
 }
 
 const handleEdit=(row)=>{
   isEdit.value=true
-  currentId.value=row.dialogVisible
+  dialogVisible.value=true
+  currentId.value=row.id
   form.value={
     title:row.title,
     content:row.content
   }
-  dialogVisible.value=true
+
 }
 
+const handleDelete=async(row)=>{
+  dialogVisible.value=true
+  try{
+    await ElMessageBox.confirm("確定要刪除這篇文章嗎？","提示",{
+      type:"warning"
+    })
+    await postApi.deletePost(row.id)
+    ElMessage.success("文章刪除成功")
+    fetchPosts()
+  }catch{
+    if(error!=cancel){
+      ElMessage.error("文章刪除失敗")
+    } 
+  }
+}
 
+const handleSubmit=async()=>{
+try{if(isEdit.value){
+  await postApi.updatePost(currentId.value,form.value)
+}else{
+  await postApi.createPost(form.value)
+}
+dialogVisible.value=false
+fetchPosts()
 
+}catch(error){
+ElMessage.error(isEdit.value? "編輯文章失敗":"新增文章失敗")
+}
+
+}
+// end of handleSubmit
 
 onMounted(()=>{
     fetchPosts()
