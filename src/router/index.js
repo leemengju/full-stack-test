@@ -9,7 +9,24 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    component: () => import('../views/About.vue')
+    component: () => import('../views/About.vue'),
+    children:[
+      {
+        path: '/about/info',
+        name: 'Info',
+        component: () => import('../views/Info.vue')
+      },
+      {
+        path: '/about/cv',
+        name: 'CV',
+        component: () => import('../views/cv.vue')
+      }
+    ]
+  },
+  {
+    path: '/test',
+    name: 'Test',
+    component: () => import('../views/Home_test.vue')
   }
 ]
 

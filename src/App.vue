@@ -8,6 +8,7 @@
       <el-menu mode="horizontal" router>
         <el-menu-item index="/">首页</el-menu-item>
         <el-menu-item index="/about">关于</el-menu-item>
+        <el-menu-item index="/test">測試</el-menu-item>
       </el-menu>
     </el-header>
     <el-main>

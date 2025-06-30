@@ -136,16 +136,21 @@ onMounted(()=>{
 
 </script>
 <style scoped>
-.about {
+.home {
   padding: 20px;
 }
 .box-card {
-  width: 480px;
+  width: 100%;
   margin: 0 auto;
 }
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 </style> 
